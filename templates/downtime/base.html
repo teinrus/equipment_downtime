@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Система учета простоев оборудования{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'downtime/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'settings_app/css/styles.css' %}">
+
+    <script src="{% static 'downtime/js/script.js' %}"></script>
+    <script src="{% static 'settings_app/js/script.js' %}"></script>
+<!-- Подключение SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+    <header>
+        <div class="logo">Логотип компании</div>
+        <nav>
+            <ul>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i> {{ user.username }}</a></li>
+                <li><a href="{% url 'user_management' %}" class="btn btn-secondary"><i class="fas fa-users"></i>Список пользователей</a></li>
+                <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Выйти</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Войти</a></li>
+            {% endif %}
+                <li><a href="#"><i class="fas fa-question-circle"></i> Помощь</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <aside>
+            <h3>Меню</h3>
+            <ul>
+                <li><a href="{% url 'dashboard_view' %}"><i class="fas fa-home"></i> Главная</a></li>
+                <li><a href="{% url 'line_settings_list' %}"><i class="fas fa-cogs"></i> Управление</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Отчеты</a></li>
+                
+            </ul>
+        </aside>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Компания. Все права защищены.</p>
+    </footer>
+</body>
+</html>

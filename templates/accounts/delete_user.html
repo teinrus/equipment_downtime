@@ -1,0 +1,14 @@
+{% extends "downtime/base.html" %} <!-- Базовый шаблон -->
+
+{% block content %}
+    <h1>Удалить пользователя: {{ user.username }}</h1>
+
+    <p>Вы уверены, что хотите удалить пользователя {{ user.username }}?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a href="{% url 'user_management' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+
+{% endblock %}

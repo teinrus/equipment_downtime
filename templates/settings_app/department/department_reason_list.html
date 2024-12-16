@@ -1,0 +1,28 @@
+{% extends "downtime/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="downtime-reasons-container">
+    <h1 class="settings-title">Причины простоя</h1>
+
+
+    <a class="add-reason-link" href="{% url 'add_downtime_reason' %}">Добавить новую причину простоя</a>
+
+
+    <ul class="reason-list">
+        {% for reason in reasons %}
+        <li class="reason-item">
+            <span class="reason-name">{{ reason.reason }}</span>  {# Поле reason модели DowntimeReason #}
+            <div class="reason-actions">
+                <a class="edit-link" href="{% url 'edit_downtime_reason' reason.pk %}">Редактировать</a>
+                <form method="post" class="delete-reason-form" id="delete-reason-form-{{ reason.pk }}">
+                    {% csrf_token %}
+                    <button type="button" class="delete-reason-button" onclick="confirmDeleteReason({{ reason.pk }});">Удалить</button>
+                </form>
+                
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

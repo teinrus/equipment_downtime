@@ -1,0 +1,19 @@
+{% extends "downtime/base.html" %} <!-- Базовый шаблон -->
+
+{% block content %}
+<h1>Профиль пользователя</h1>
+<p>Имя пользователя: {{ user.username }}</p>
+<p>Email: {{ user.email }}</p>
+
+<h2>Группы:</h2>
+<ul>
+    {% for group in user_groups %}
+        <li>{{ group.name }}</li>
+    {% empty %}
+        <li>Пользователь не состоит в группах.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'edit_profile' %}" class="btn btn-primary">Редактировать</a> <!-- Кнопка редактирования -->
+
+{% endblock %}

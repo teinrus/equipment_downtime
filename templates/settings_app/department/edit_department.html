@@ -1,0 +1,18 @@
+{% extends "downtime/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'path/to/edit_department.css' %}">  {# Убедитесь, что у вас правильный путь к CSS файлу #}
+
+<div class="edit-department-container">
+    <h1 class="edit-department-title">Редактировать подразделение</h1>
+
+    <form method="post" class="edit-department-form">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Выводим форму с помощью метода as_p для форматирования полей -->
+        <button type="submit" class="edit-department-button">Сохранить</button>
+    </form>
+
+    <a href="{% url 'department_settings_list' %}" class="back-link">Назад к списку подразделений</a>
+</div>
+{% endblock %}

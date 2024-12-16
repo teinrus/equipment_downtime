@@ -1,0 +1,12 @@
+{% extends "downtime/base.html" %} <!-- Базовый шаблон -->
+
+{% block content %}
+    <h1>Редактировать пользователя: {{ user.username }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    </form>
+
+{% endblock %}

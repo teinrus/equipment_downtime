@@ -1,0 +1,33 @@
+{% extends "downtime/base.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Управление участками</title>
+</head>
+<body>
+    <h1>Управление участками</h1>
+    <a href="{% url 'add_section' %}">Добавить новый участок</a>
+
+    {% for line in lines %}
+        <h2>{{ line.get_line_name_display }}</h2>
+        <ul>
+            {% for section in line.sections.all %}
+                <li>
+                    {{ section.name }} - 
+                    {% if section.is_active %}
+                        <span style="color: green;">Активен</span>
+                    {% else %}
+                        <span style="color: red;">Неактивен</span>
+                    {% endif %}
+                    <a href="{% url 'toggle_section' section.id %}">Переключить</a>
+                    <a href="{% url 'delete_section' section.id %}" onclick="return confirm('Вы уверены, что хотите удалить этот участок?');">Удалить</a>
+                </li>
+            {% empty %}
+                <li>Нет участков для этой линии.</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+{% endblock %}

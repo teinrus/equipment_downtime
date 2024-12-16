@@ -1,0 +1,21 @@
+{% extends "downtime/base.html" %}
+
+{% block content %}
+<h1>Добавить причину простоя</h1>
+<form method="post">
+    {% csrf_token %}
+    
+    <label for="department">Подразделение:</label>
+    <select id="department" name="department" required>
+        {% for department in departments %}
+            <option value="{{ department.id }}">{{ department.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="reason">Причина:</label>
+    <input type="text" id="reason" name="reason" required>
+    
+    <button type="submit">Добавить</button>
+</form>
+<a href="{% url 'reason_settings_list' %}">Назад к списку причин простоя</a>
+{% endblock %}

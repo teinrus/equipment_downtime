@@ -1,0 +1,51 @@
+{% extends "downtime/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1 class="settings-title">Управление</h1>
+<ul class="line-list">
+    <div class="menu">
+        <h2>Настройки</h2>
+        <ul>
+        <li class="line-item">
+            <span class="line-name">Подразделения</span> 
+            <a class="edit-link" href="{% url 'department_settings_list' %}">Редактировать</a>
+        </li>
+        <li class="line-item">
+            <span class="line-name">Причины простоя</span> 
+            <a class="edit-link" href="{% url 'reason_settings_list' %}">Редактировать</a>
+        </li>
+
+        </ul>
+    </div>
+    
+</ul>
+
+
+<ul class="line-list">
+    <h2>Настройки линий</h2>
+    {% for line in lines %}
+        <li class="line-item">
+            <span class="line-name">{{ line.get_line_name_display }}</span> 
+            <span class="line-status">(Активна: {{ line.is_active }})</span>
+            <a class="edit-link" href="{% url 'edit_line_settings' line.pk %}">Редактировать</a>
+        </li>
+    {% endfor %}
+    <a class="add-link" href="{% url 'add_line_settings' %}">Добавить новую линию</a>  
+</ul>
+
+<ul class="line-list">
+
+
+        <li class="line-item">
+            <span class="line-name">Настройки участков</span> 
+            <a class="edit-link" href="{% url 'section_management'%}">Редактировать</a>
+                </li>
+
+</ul>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "downtime/base.html" %}
+
+{% block content %}
+<div class="department-list-container">
+    <h1 class="settings-title">Список подразделений</h1>
+    <a href="{% url 'add_department' %}" class="add-reason-link">Добавить новое подразделение</a>
+
+    <ul class="reason-list">
+        {% for department in departments %}
+        <li class="reason-item">
+                <span class="reason-name">{{ department.name }} </span>  
+                <div class="reason-actions">
+                    <a class="edit-link" href="{% url 'edit_department' department.pk %}">Редактировать</a>  <!-- Ссылка на редактирование -->
+                    <form method="post" class="delete-reason-form" id="delete-department-form-{{ department.pk }}">
+                        {% csrf_token %}
+                        <button type="button" class="delete-reason-button" onclick="confirmDeleteDepartment({{ department.pk }});">Удалить</button>
+                    </form>
+                    
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    
+</div>
+{% endblock %}

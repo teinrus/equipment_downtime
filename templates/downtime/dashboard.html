@@ -1,0 +1,298 @@
+{% extends 'downtime/base.html' %}
+
+{% block title %}Система учета простоев{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <main>
+        <div class="dashboard">
+            <div class="chart">
+              <div id="charts-container"></div>            </div>
+            <div class="chart">
+              <canvas id="quantityChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+        
+
+        <h2>Таблица активных линий</h2>
+        <div id="Data" class="tabcontent active">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Линия</th>
+                        <th>Статус</th>
+                        <th>Время фиксации</th>
+                        <th>Действия</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in lines %}
+                    <tr>
+                        <td>{{ line.line_name }}</td>
+                        <td class="active">Активно</td>
+                        <td>{{ line.fixation_time }} мин</td>
+                        <td><button onclick="openDowntimeModal('{{ line.line_name }}', {{ line.pk }})">Просмотр</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </main>
+</div>
+<!-- Модальное окно для просмотра простоев -->
+<div id="downtimeModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeDowntimeModal()">&times;</span>
+        <h2>Простои для <span id="equipmentNameModal"></span></h2> 
+        <table id="downtimeTable">
+            <thead>
+                <tr>
+
+                    <th>Время начала</th>
+                    <th>Время простоя</th>
+                    <th>Участок</th>
+                    <th>Ответственное подразделение</th>
+                    <th>Причина простоя</th>
+                    <th>Комментарий</th>
+                    {% if user.is_authenticated %}
+                    <th>Опции</th>
+                {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Здесь будут динамически добавляться данные -->
+            </tbody>
+        </table>
+        {% if user.is_authenticated %}
+
+        <!-- Кнопка для показа формы -->
+        <button class="add-button" onclick="showFormButton(); loadSections(document.getElementById('equipmentNameModal').innerText)">Добавить новый простой</button>
+
+        <!-- Форма для добавления нового простоя -->
+    <div id="addDowntimeModal">
+        <h3>Добавить новый простой</h3>
+        <form id="addDowntimeForm" method="post" action="{% url 'add_downtime' %}">
+            {% csrf_token %}
+            <label for="sections">Участок:</label>
+            <select id="sections" name="sections" >
+                <option value="">Выберите участок</option>
+
+            </select>
+        
+            <label for="department">Подразделение:</label>
+            <select id="department" name="department" required onchange="loadReasons(this.value)">
+                <option value="">Выберите подразделение</option>
+                {% for department in departments %}
+                    <option value="{{ department.id }}" data-name="{{ department.name }}">{{ department.name }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="reason">Причина простоя:</label>
+            <select id="reason" name="reason" required>
+                <option value="">Выберите причину</option>
+                <!-- Причины будут загружаться через JavaScript -->
+            </select>
+            
+        
+            <label for="startTime">Время начала:</label>
+            <input type="time" id="startTime" name="start_time" placeholder="Время начала" required>
+        
+            <label for="endTime">Время окончания:</label>
+            <input type="time" id="endTime" name="end_time" placeholder="Время окончания" required>
+        
+            <input type="text" id="comment" name="comment" placeholder="Комментарий">
+        
+            <button type="submit">Добавить</button>
+        </form>
+        
+
+        
+    </div>
+
+    {% endif %}
+    </div>
+</div>
+<div id="charts-container"></div>
+
+<script>
+    // Объект для хранения графиков
+    const charts = {};
+    let chartKeys = []; // Список линий будет загружаться динамически
+    let currentChartIndex = 0; // Индекс текущего графика
+  
+    // Функция для получения списка линий с сервера
+    async function fetchChartKeys() {
+      try {
+        const response = await fetch('/api/get_lines'); // API возвращает список линий
+        const data = await response.json();
+        chartKeys = data.lines || []; // Сохраняем список линий
+        console.log('Chart keys loaded:', chartKeys);
+      } catch (error) {
+        console.error('Error fetching chart keys:', error);
+      }
+    }
+  
+    // Функция для получения данных о скорости с сервера
+    async function fetchChartData() {
+      try {
+        const response = await fetch('/api/get_speed_data'); // API возвращает данные о скорости
+        const data = await response.json();
+  
+        // Обновляем или создаем графики для каждой линии
+        Object.keys(data).forEach(lineKey => {
+          const chartData = data[lineKey];
+          if (charts[lineKey]) {
+            updateChart(lineKey, chartData.labels, chartData.values);
+          } else {
+            createChart(lineKey, chartData.labels, chartData.values);
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching chart data:', error);
+      }
+    }
+  
+    // Функция для создания нового графика
+    function createChart(lineKey, labels, values) {
+      const chartContainer = document.createElement('div');
+      chartContainer.classList.add('chart-container');
+      chartContainer.innerHTML = `
+        <h3>Line: ${lineKey}</h3>
+        <canvas id="${lineKey}"></canvas>
+      `;
+      document.getElementById('charts-container').appendChild(chartContainer);
+  
+      const ctx = document.getElementById(lineKey).getContext('2d');
+      charts[lineKey] = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Speed',
+            data: values,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            fill: false,
+          }],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { title: { display: true, text: ' ' } },
+            y: { title: { display: true, text: ' ' } },
+          },
+        },
+      });
+  
+      chartContainer.style.display = 'none'; // Скрываем график по умолчанию
+    }
+  
+    // Функция для обновления данных графика
+    function updateChart(lineKey, labels, values) {
+      const chart = charts[lineKey];
+      if (chart) {
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = values;
+        chart.update();
+      }
+    }
+  
+    // Функция для отображения текущего графика
+    function showChart(lineKey) {
+      document.querySelectorAll('.chart-container').forEach(chart => {
+        chart.style.display = 'none';
+      });
+      const chartToShow = document.querySelector(`#${lineKey}`).parentElement;
+      if (chartToShow) {
+        chartToShow.style.display = 'block';
+      }
+    }
+  
+    // Функция для циклического переключения графиков
+    function startGraphRotation() {
+      if (chartKeys.length > 0) {
+        // Показать первый график сразу
+        const firstLineKey = chartKeys[0];
+        showChart(firstLineKey);
+        currentChartIndex = 1; // Установить следующий индекс
+
+        // Запускать переключение графиков каждые 10 секунд
+        setInterval(() => {
+          const currentLineKey = chartKeys[currentChartIndex];
+          showChart(currentLineKey);
+          currentChartIndex = (currentChartIndex + 1) % chartKeys.length;
+        }, 10000);
+      } else {
+        console.error('No chart keys available for rotation.');
+      }
+    }
+    
+  
+    // Инициализация
+    async function init() {
+      await fetchChartKeys(); // Загружаем ключи линий
+      await fetchChartData(); // Загружаем данные для графиков
+      startGraphRotation(); // Запускаем переключение графиков
+      setInterval(fetchChartData, 30000); // Обновляем данные каждые 30 секунд
+
+    }
+    
+  
+    // Запускаем инициализацию при загрузке страницы
+    window.onload = init;
+  </script>
+  <script>
+    const ctx2 = document.getElementById('quantityChart').getContext('2d');
+    let chart2 = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: [], // Названия линий
+            datasets: [{
+                label: 'Количество продукции',
+                data: [], // Значения продукции
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    function updateChart() {
+        fetch('/product-quantity-chart/')  // Замените URL на путь к вашей функции
+            .then(response => response.json())
+            .then(data => {
+                chart2.data.labels = data.lines;  // Обновляем метки
+                chart2.data.datasets[0].data = data.quantities;  // Обновляем значения
+                chart2.update();  // Перерисовываем график
+            })
+            .catch(error => console.error('Ошибка загрузки данных:', error));
+    }
+
+    // Обновление графика каждую минуту
+    setInterval(updateChart, 60000);
+    updateChart(); // Первоначальная загрузка данных
+</script>
+
+<style>
+  #quantityChart {
+      margin-top: 40px;    
+
+  }
+</style>
+
+
+
+
+{% endblock %}

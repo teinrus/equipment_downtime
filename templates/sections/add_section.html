@@ -1,0 +1,28 @@
+{% extends "downtime/base.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить участок</title>
+</head>
+<body>
+    <h1>Добавить новый участок</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="line">Линия:</label>
+        <select name="line" id="line">
+            {% for line in lines %}
+                <option value="{{ line.id }}">{{ line.get_line_name_display }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="name">Название участка:</label>
+        <input type="text" name="name" id="name" required>
+        <br>
+        <button type="submit">Добавить</button>
+    </form>
+    <a href="{% url 'section_management' %}">Назад</a>
+</body>
+</html>
+{% endblock %}

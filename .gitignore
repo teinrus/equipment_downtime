@@ -1,0 +1,28 @@
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.db
+*.sqlite3
+/static/
+media/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Django migrations
+*/migrations/*

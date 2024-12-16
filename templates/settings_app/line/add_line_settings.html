@@ -1,0 +1,25 @@
+{% extends "downtime/base.html" %}
+
+{% block content %}
+<h1 class="add-title">Добавить новую линию</h1>
+<form method="post" class="add-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if form.errors %}
+        <div class="form-errors">
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <button type="submit" class="save-button">Сохранить</button>
+</form>
+<a href="{% url 'line_settings_list' %}" class="back-link">Назад к настройкам линий</a>
+{% endblock %}
