@@ -1,0 +1,356 @@
+/* Общие стили */
+html, body {
+    height: 100%; /* Задаем высоту 100% для html и body */
+    margin: 0; /* Убираем отступы */
+}
+
+.container {
+    display: flex;
+    margin: 20px;
+    flex-grow: 1; /* Позволяет контейнеру занимать оставшееся пространство */
+}
+
+footer {
+    text-align: center; /* Центрирование текста */
+    padding: 10px; /* Отступы для футера */
+    background-color: #35424a; /* Цвет фона футера */
+    color: #ffffff; /* Цвет текста футера */
+    position: fixed; /* Фиксированное положение */
+    bottom: 0; /* Привязка к низу экрана */
+    left: 0; /* Привязка к левому краю */
+    width: 100%; /* Полная ширина */
+    z-index: 1000; /* Поверх остальных элементов */
+}
+
+header {
+    background-color: #35424a;
+    color: #ffffff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    margin: 20px;
+}
+
+aside {
+    width: 200px; /* Ширина бокового меню */
+    background-color: #ffffff; /* Белый фон */
+    padding: 15px; /* Отступ внутри меню */
+    border-radius: 5px; /* Закругленные углы */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для эффекта поднятия */
+    margin-right: 20px; /* Отступ справа от основного контента */
+}
+
+aside h3 {
+    margin-top: 0; /* Убираем отступ сверху */
+    color: #35424a; /* Цвет заголовка */
+    font-size: 18px; /* Размер шрифта заголовка */
+}
+
+aside ul {
+    list-style: none; /* Убираем стандартные маркеры списка */
+    padding: 0; /* Убираем отступы */
+}
+
+aside ul li {
+    margin: 10px 0; /* Отступы между пунктами меню */
+}
+
+aside ul li a {
+    text-decoration: none; /* Убираем подчеркивание ссылок */
+    color: #35424a; /* Цвет текста ссылок */
+    padding: 10px; /* Отступы для кликабельной области */
+    display: block; /* Делаем ссылки блочными для всей ширины */
+    border-radius: 4px; /* Закругляем углы ссылок */
+    transition: background-color 0.3s; /* Плавный переход для фона */
+}
+
+aside ul li a:hover {
+    background-color: #eaeaea; /* Изменение фона при наведении */
+    color: #35424a; /* Цвет текста при наведении */
+}
+
+main {
+    flex-grow: 1; /* Позволяет элементу занимать оставшееся пространство */
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Добавляем прокрутку по вертикали, если содержимое больше */
+}
+
+/* Стили для таблицы */
+table {
+    width: 100%; /* Ширина таблицы */
+    border-collapse: collapse; /* Убираем двойные границы */
+    margin-top: 15px; /* Отступ сверху */
+}
+
+th, td {
+    padding: 12px; /* Внутренние отступы */
+    text-align: left; /* Выравнивание текста */
+    border: 1px solid #ddd; /* Границы ячеек */
+}
+
+th {
+    background-color: #35424a; /* Фоновый цвет для заголовков */
+    color: #ffffff; /* Цвет текста */
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Цвет для четных строк */
+}
+
+tr:hover {
+    background-color: #ddd; /* Цвет при наведении */
+}
+
+/* Стили для модального окна */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed; /* Окно фиксируется на экране */
+    z-index: 1000; /* Поверх остальных элементов */
+    left: 0;
+    top: 0;
+    width: 100%; /* Полная ширина */
+    height: 100%; /* Полная высота */
+    overflow: auto; /* Включает прокрутку, если необходимо */
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+}
+
+.modal-content {
+    background-color: #ffffff; /* Белый фон для содержимого */
+    margin: 10% auto; /* 15% от верхнего края и центрирование */
+    padding: 20px;
+    border: 1px solid #888; /* Граница вокруг содержимого */
+    width: 80%; /* Ширина содержимого */
+    border-radius: 5px; /* Закругленные углы */
+    max-width: 1000px; /* Максимальная ширина для больших экранов */
+}
+
+.close {
+    color: #aaa; /* Цвет для кнопки закрытия */
+    float: right; /* Сдвигаем вправо */
+    font-size: 28px; /* Размер шрифта */
+    font-weight: bold; /* Жирный шрифт */
+}
+
+.close:hover,
+.close:focus {
+    color: black; /* Цвет при наведении или фокусе */
+    text-decoration: none; /* Убираем подчеркивание */
+    cursor: pointer; /* Указатель курсора */
+}
+
+.dashboard {
+    display: flex; /* Используем Flexbox для размещения графиков в ряд */
+    justify-content: space-between; /* Распределяем пространство между графиками */
+    margin-top: 20px; /* Отступ сверху */
+    flex-wrap: wrap; /* Позволяет графикам переноситься на следующую строку на маленьких экранах */
+}
+
+.chart {
+    flex: 1; /* Каждый график занимает равное пространство */
+    margin: 0 10px; /* Отступы между графиками */
+    min-width: 200px; /* Минимальная ширина для графиков */
+}
+
+/* Ограничьте максимальную высоту графиков, если необходимо */
+canvas {
+    max-height: 300px; /* Максимальная высота графиков */
+}
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Вертикальное расположение элементов */
+        margin: 10px; /* Уменьшаем отступы */
+    }
+
+    aside {
+        margin-right: 0; /* Убираем правый отступ для бокового меню */
+        margin-bottom: 20px; /* Отступ снизу для бокового меню */
+    }
+
+    header {
+        flex-direction: column; /* Вертикальное расположение элементов в заголовке */
+    }
+
+    nav ul li {
+        display: block; /* Элементы меню располагаются по вертикали */
+        margin-left: 0; /* Убираем левый отступ */
+        margin-top: 10px; /* Отступ сверху для вертикального меню */
+    }
+
+    .dashboard {
+        flex-direction: column; /* Вертикальное расположение графиков */
+        align-items: center; /* Центрируем графики */
+    }
+
+    .chart {
+        margin: 10px 0; /* Уменьшаем отступы между графиками */
+        width: 100%; /* Графики занимают полную ширину */
+    }
+}
+
+
+/* Стили для формы добавления нового простоя */
+#addDowntimeForm {
+    background-color: #f9f9f9; /* Светлый фон */
+    border: 1px solid #ccc; /* Серый бордер */
+    border-radius: 5px; /* Скругление углов */
+    padding: 20px; /* Отступы внутри формы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+    width: 300px; /* Ширина формы */
+    margin: 20px auto; /* Центрирование формы */
+}
+
+/* Стили для заголовка формы */
+#addDowntimeForm h3 {
+    text-align: center; /* Центрирование текста */
+    color: #333; /* Цвет текста заголовка */
+    margin-bottom: 15px; /* Отступ снизу */
+}
+
+/* Стили для полей ввода */
+#addDowntimeForm input[type="text"],
+#addDowntimeForm input[type="time"] {
+    width: calc(100% - 20px); /* Ширина 100% минус отступы */
+    padding: 10px; /* Отступы внутри полей */
+    margin-bottom: 10px; /* Отступ снизу */
+    border: 1px solid #ccc; /* Серый бордер */
+    border-radius: 4px; /* Скругление углов */
+    font-size: 14px; /* Размер шрифта */
+}
+
+/* Стили для кнопки */
+#addDowntimeForm button {
+    background-color: #28a745; /* Зеленый фон кнопки */
+    color: white; /* Белый текст на кнопке */
+    border: none; /* Без бордера */
+    padding: 10px; /* Отступы внутри кнопки */
+    border-radius: 4px; /* Скругление углов кнопки */
+    cursor: pointer; /* Курсор в виде указателя */
+    font-size: 16px; /* Размер шрифта */
+    width: 100%; /* Ширина кнопки 100% */
+}
+
+/* Эффект при наведении на кнопку */
+#addDowntimeForm button:hover {
+    background-color: #218838; /* Темнее зеленый при наведении */
+}
+
+
+
+
+/* Уникальные стили для модального окна добавления нового простоя */
+#addDowntimeModal {
+    background-color: #ffffff; /* Белый фон */
+    border-radius: 10px; /* Закругленные углы */
+    padding: 20px; /* Внутренние отступы */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Тень для глубины */
+    max-width: 400px; /* Максимальная ширина */
+    margin: 30px auto; /* Центрирование модального окна */
+    font-family: Arial, sans-serif; /* Шрифт для текста */
+}
+
+#addDowntimeModal h3 {
+    text-align: center; /* Центрирование заголовка */
+    color: #333; /* Цвет заголовка */
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+#addDowntimeForm label {
+    display: block; /* Блочный элемент для меток */
+    margin-bottom: 5px; /* Отступ снизу */
+    font-weight: bold; /* Полужирный текст */
+}
+
+#addDowntimeForm select,
+#addDowntimeForm input[type="time"],
+#addDowntimeForm input[type="text"] {
+    width: 100%; /* Полная ширина */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 15px; /* Отступ снизу */
+    border: 1px solid #ccc; /* Цвет границы */
+    border-radius: 5px; /* Закругленные углы */
+    box-sizing: border-box; /* Учет границ в ширине */
+}
+
+#addDowntimeForm button {
+    background-color: #28a745; /* Зеленый фон */
+    color: white; /* Белый текст */
+    padding: 10px; /* Внутренние отступы */
+    border: none; /* Убрать границу */
+    border-radius: 5px; /* Закругленные углы */
+    cursor: pointer; /* Курсор в виде указателя */
+    width: 100%; /* Полная ширина кнопки */
+    font-size: 16px; /* Размер шрифта */
+}
+
+#addDowntimeForm button:hover {
+    background-color: #218838; /* Темнее зеленый при наведении */
+}
+
+#addDowntimeForm input::placeholder {
+    color: #888; /* Цвет плейсхолдера */
+}
+
+/* Стили для селектов */
+#addDowntimeModal select {
+    width: 100%; /* Полная ширина */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 15px; /* Отступ снизу */
+    border: 1px solid #ccc; /* Цвет границы */
+    border-radius: 5px; /* Закругленные углы */
+    background-color: #f9f9f9; /* Цвет фона */
+    color: #333; /* Цвет текста */
+    font-size: 16px; /* Размер шрифта */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для глубины */
+    appearance: none; /* Убираем стандартные стили браузера */
+    -webkit-appearance: none; /* Для Safari */
+    -moz-appearance: none; /* Для Firefox */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><polygon points="0,0 20,0 10,10" fill="%23333"/></svg>'); /* Стрелка вниз */
+    background-repeat: no-repeat; /* Убираем повтор */
+    background-position: right 10px center; /* Позиция стрелки */
+    background-size: 12px; /* Размер стрелки */
+}
+
+#addDowntimeModal select:focus {
+    border-color: #28a745; /* Цвет границы при фокусе */
+    outline: none; /* Убираем контур */
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Тень при фокусе */
+}
+
+#addDowntimeModal label {
+    display: block; /* Блочный элемент для меток */
+    margin-bottom: 5px; /* Отступ снизу */
+    font-weight: bold; /* Полужирный текст */
+    color: #333; /* Цвет текста меток */
+}
